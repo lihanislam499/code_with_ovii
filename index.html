@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en" id="html-root">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ovi - Personalized Web Gifts Portfolio</title>
+    <script>
+        try { if (localStorage.getItem('theme') === 'light') document.documentElement.classList.add('light'); } catch (e) {}
+    </script>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Font: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        darkBg: '#0b0f19',
+                        neonBlue: '#00d2ff',
+                        deepBlue: '#3a7bd5',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0b0f19;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-50%); }
+        }
+        .animate-marquee {
+            display: flex;
+            width: 200%;
+            animation: marquee 25s linear infinite;
+        }
+        .animate-marquee:hover {
+            animation-play-state: paused;
+        }
+
+        .bg-grid-pattern {
+            background-image: linear-gradient(to right, rgba(0, 210, 255, 0.05) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(0, 210, 255, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        .neon-glow {
+            box-shadow: 0 0 25px rgba(0, 210, 255, 0.25);
+            transition: all 0.3s ease;
+        }
+        .neon-glow:hover {
+            box-shadow: 0 0 35px rgba(0, 210, 255, 0.5);
+            transform: translateY(-4px);
+        }
+        .neon-text-glow {
+            text-shadow: 0 0 15px rgba(0, 210, 255, 0.5);
+        }
+                /* রিভিউ স্ক্রোলিং (ডান থেকে বামে) */
+        @keyframes reviews-scroll {
+            0%   { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        .reviews-track {
+            display: flex;
+            width: max-content;
+            animation: reviews-scroll 70s linear infinite;
+        }
+        .reviews-wrap:hover .reviews-track {
+            animation-play-state: paused;
+        }
+        .reviews-wrap {
+            -webkit-mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+            mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+        }
+
+                /* ================= LIGHT MODE ================= */
+        body { transition: background-color .3s ease, color .3s ease; }
+
+        /* পেজ ও সেকশনের ব্যাকগ্রাউন্ড */
+        html.light body { background-color: #f4f8fc !important; color: #0f172a !important; }
+        html.light [class*="bg-[#0b0f19]"] { background-color: #f4f8fc !important; }
+        html.light [class*="bg-[#070b14]"] { background-color: #e8f2fa !important; }
+        html.light nav.sticky { background-color: rgba(255,255,255,.92) !important; }
+        html.light footer { background-image: none !important; background-color: #e8f2fa !important; }
+        html.light .bg-gray-900:not(.phone-mock *),
+        html.light .bg-gray-950 { background-color: #ffffff !important; }
+
+        /* কার্ড (প্যাকেজ, অকেশন, রিভিউ, পেমেন্ট, প্রাইভেসি) */
+        html.light [class*="from-[#0a1128]"] { background-image: none !important; background-color: #ffffff !important; }
+        html.light [class*="from-[#0e1c3f]"] { background-image: linear-gradient(to bottom, #dff6ff, #ffffff) !important; }
+        html.light [class*="from-cyan-950/70"] { background-image: linear-gradient(to bottom, #e0f7ff, #ffffff) !important; }
+        html.light [class*="bg-cyan-950/80"]:not(.phone-mock *) { background-color: #e0f7ff !important; }
+
+        /* লেখার রঙ (ফোন মকআপ বাদে) */
+        html.light .text-white:not(.phone-mock *):not(.bg-green-500) { color: #0f172a !important; }
+        html.light .text-gray-300:not(.phone-mock *) { color: #334155 !important; }
+        html.light .text-gray-400:not(.phone-mock *) { color: #475569 !important; }
+        html.light .text-gray-500 { color: #64748b !important; }
+        html.light .text-cyan-400:not(.phone-mock *),
+        html.light .text-cyan-300:not(.phone-mock *) { color: #0891b2 !important; }
+        html.light [class*="text-cyan-400/80"] { color: #0e7490 !important; }
+        html.light .text-red-400 { color: #dc2626 !important; }
+        html.light .hover\:text-cyan-400:hover { color: #0891b2 !important; }
+        html.light .hover\:text-white:hover { color: #0f172a !important; }
+
+        /* "OVI" লোগো লেখা (সাদা→cyan গ্রেডিয়েন্ট সাদা পেজে দেখা যেত না) */
+        html.light .from-white:not(.phone-mock *) { --tw-gradient-from: #0f172a !important; }
+        html.light .to-cyan-300:not(.phone-mock *) { --tw-gradient-to: #0891b2 !important; }
+
+        /* বর্ডার, গ্লো, গ্রিড */
+        html.light [class*="border-cyan-900"] { border-color: rgba(8,145,178,.25) !important; }
+        html.light .neon-glow { box-shadow: 0 8px 24px rgba(8,145,178,.15); }
+        html.light .neon-glow:hover { box-shadow: 0 12px 32px rgba(8,145,178,.28); }
+        html.light .neon-text-glow { text-shadow: none; }
+        html.light .bg-grid-pattern {
+            background-image: linear-gradient(to right, rgba(8,145,178,.08) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(8,145,178,.08) 1px, transparent 1px);
+        }
+
+                /* WhatsApp ফ্লোটিং বাটন: shadow + glow + pulse */
+        .wa-float {
+            box-shadow: 0 0 0 4px rgba(34,197,94,.25),
+                        0 10px 30px rgba(34,197,94,.55),
+                        0 0 45px rgba(34,197,94,.45);
+        }
+        .wa-float::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: 9999px;
+            background: rgba(34,197,94,.55);
+            z-index: -1;
+            animation: wa-pulse 2s ease-out infinite;
+        }
+        @keyframes wa-pulse {
+            0%   { transform: scale(1);   opacity: .7; }
+            100% { transform: scale(1.8); opacity: 0; }
+        }
+
+    </style>
+</head>
+<body class="bg-darkBg text-white antialiased selection:bg-neonBlue selection:text-black">
+
+    <!-- ১. টপ কন্টিনিউয়াস স্ক্রোলিং মারকিউ ব্যানার -->
+    <div class="bg-gradient-to-r from-blue-600 via-cyan-400 to-blue-600 text-black font-bold py-2 overflow-hidden whitespace-nowrap shadow-lg shadow-cyan-500/20 text-sm md:text-base relative z-50">
+        <div class="animate-marquee flex items-center space-x-12">
+            <span class="flex items-center gap-2"><i class="fa-solid fa-gift"></i> 40% OFF on all web gifts - Limited time - Order on WhatsApp now!</span>
+            <span class="flex items-center gap-2"><i class="fa-solid fa-bolt"></i> MEGA SALE — 40% OFF on custom code gifts - Order on WhatsApp now!</span>
+            <span class="flex items-center gap-2"><i class="fa-solid fa-gift"></i> 40% OFF on all web gifts - Limited time - Order on WhatsApp now!</span>
+            <span class="flex items-center gap-2"><i class="fa-solid fa-bolt"></i> MEGA SALE — 40% OFF on custom code gifts - Order on WhatsApp now!</span>
+        </div>
+    </div>
+
+    <!-- ২. স্টিকি ন্যাভবার -->
+    <nav class="sticky top-0 z-40 bg-[#0b0f19]/90 backdrop-blur-md border-b border-cyan-900/30 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            
+            <!-- লোগো এবং ব্র্যান্ড নেম (photo1.jpg সহ) -->
+            <div class="flex items-center space-x-3 cursor-pointer">
+                <div class="w-10 h-10 rounded-xl overflow-hidden border border-cyan-500/40 neon-glow bg-gradient-to-br from-neonBlue to-blue-700 flex items-center justify-center">
+                    <img src="photo1.jpg" alt="Ovi Logo" onerror="this.onerror=null; this.src='https://placehold.co/40x40/00d2ff/000000?text=OVI';" class="w-full h-full object-cover">
+                </div>
+                <div>
+                    <span class="text-xl font-bold tracking-wider bg-gradient-to-r from-white to-cyan-300 bg-clip-text text-transparent">OVI</span>
+                    <p class="text-[10px] text-cyan-400 font-medium tracking-widest uppercase" data-en="PERSONALIZED WEB GIFTS" data-bn="পারসোনালাইজড ওয়েব গিফট">PERSONALIZED WEB GIFTS</p>
+                </div>
+            </div>
+
+            <!-- মেনু লিংকস -->
+            <div class="hidden lg:flex items-center space-x-8 text-sm font-medium text-gray-300">
+                <a href="#occasions" class="hover:text-cyan-400 transition-colors" data-en="Occasions" data-bn="অকেশনস">Occasions</a>
+                <a href="#packages" class="hover:text-cyan-400 transition-colors" data-en="Packages" data-bn="প্যাকেজেস">Packages</a>
+                <a href="#reviews" class="hover:text-cyan-400 transition-colors" data-en="Reviews" data-bn="রিভিউস">Reviews</a>
+                <a href="#payments" class="hover:text-cyan-400 transition-colors" data-en="Payments" data-bn="পেমেন্টস">Payments</a>
+            </div>
+
+            <!-- ডান পাশের ইউটিলিটি (EN / BN Language Toggle Buttons) -->
+            <div class="flex items-center space-x-4">
+                                <button id="theme-btn" onclick="toggleTheme()" aria-label="Toggle light/dark mode"
+                    class="w-9 h-9 rounded-full bg-gray-900 border border-cyan-900/50 text-cyan-400 flex items-center justify-center hover:scale-110 transition-all">
+                    <i id="theme-icon" class="fa-solid fa-sun"></i>
+                </button>
+                <div class="flex bg-gray-900 border border-cyan-900/50 rounded-full p-1 text-xs font-semibold">
+                    <button id="en-btn" onclick="setLanguage('en')" class="px-3 py-1 rounded-full bg-cyan-500 text-black shadow-sm transition-all font-bold">EN</button>
+                    <button id="bn-btn" onclick="setLanguage('bn')" class="px-3 py-1 rounded-full text-gray-400 hover:text-white transition-all font-bold">BAN</button>
+                </div>
+
+                <button id="mobile-menu-btn" class="lg:hidden text-cyan-400 text-2xl focus:outline-none">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- মোবাইল ড্রপডাউন মেনু -->
+        <div id="mobile-menu" class="hidden lg:hidden bg-gray-950 border-b border-cyan-900/50 px-6 py-4 space-y-3">
+            <a href="#occasions" class="block text-gray-300 hover:text-cyan-400">Occasions</a>
+            <a href="#packages" class="block text-gray-300 hover:text-cyan-400">Packages</a>
+            <a href="#reviews" class="block text-gray-300 hover:text-cyan-400">Reviews</a>
+            <a href="#payments" class="block text-gray-300 hover:text-cyan-400">Payments</a>
+        </div>
+    </nav>
+
+    <!-- ৩. হিরো সেকশন -->
+    <section class="relative bg-grid-pattern min-h-[calc(100vh-100px)] flex items-center overflow-hidden py-12 lg:py-0">
+    
+    <!-- Left soft glow -->
+    <div class="absolute -top-40 -left-40 w-[500px] h-[500px] bg-cyan-500/15 rounded-full blur-[100px] pointer-events-none"></div>
+    
+    <!-- Main big glow behind the phone (সবচেয়ে গুরুত্বপূর্ণ) -->
+    <div class="absolute top-1/2 right-0 -translate-y-1/2 translate-x-1/4 w-[700px] h-[700px] bg-cyan-400/25 rounded-full blur-[140px] pointer-events-none"></div>
+    
+    <!-- Secondary softer glow -->
+    <div class="absolute bottom-10 right-10 w-[400px] h-[400px] bg-blue-500/15 rounded-full blur-[90px] pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <div class="lg:col-span-7 space-y-6 text-left">
+                    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cyan-950/80 border border-cyan-500/30 text-cyan-400 text-xs sm:text-sm font-semibold tracking-wide neon-glow">
+                        <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+                        <span data-en="PREMIUM PERSONALIZED GIFT WEBSITES" data-bn="প্রিমিয়াম পারসোনালাইজড গিফট ওয়েবসাইট">PREMIUM PERSONALIZED GIFT WEBSITES</span>
+                    </div>
+
+                    <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-tight">
+                        <span data-en="Gift them a website" data-bn="তাদের উপহার দিন এমন একটি ওয়েবসাইট">Gift them a website</span> <br class="hidden sm:inline">
+                        <span class="bg-gradient-to-r from-cyan-400 via-blue-400 to-indigo-500 bg-clip-text text-transparent neon-text-glow" data-en="they'll cherish forever." data-bn="যা তারা চিরকাল মনে রাখবে">they'll cherish forever.</span>
+                    </h1>
+
+                    <p class="text-gray-400 text-base sm:text-lg max-w-2xl font-normal leading-relaxed" data-en="Birthdays, anniversaries, Eid, Valentine's & more — handcrafted gift pages with your photos, songs, videos and messages. Delivered fast on WhatsApp." data-bn="জন্মদিন, অ্যানিভার্সারি, ঈদ, ভ্যালেন্টাইন ও আরও অনেক কিছু — আপনার ছবি, গান, ভিডিও এবং মেসেজ দিয়ে তৈরি আকর্ষণীয় ওয়েব গিফট। হোয়াটসঅ্যাপে দ্রুত ডেলিভারি।">
+                        Birthdays, anniversaries, Eid, Valentine's & more — handcrafted gift pages with your photos, songs, videos and messages. Delivered fast on WhatsApp.
+                    </p>
+
+                    <div class="flex flex-wrap items-center gap-4 pt-4">
+                        <a href="#packages" class="px-8 py-4 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-black font-bold text-base hover:bg-white hover:text-black hover:scale-105 shadow-lg shadow-cyan-500/25 transition-all duration-300 transform flex items-center gap-2">
+                            <i class="fa-solid fa-rocket"></i> <span data-en="Explore Packages" data-bn="প্যাকেজ দেখুন">Explore Packages</span>
+                        </a>
+                        <a href="https://wa.me/8801875550096?text=Hi%20Ovi,%20I%20want%20to%20order%20a%20website%20gift" target="_blank" class="px-8 py-4 rounded-xl bg-gray-900 border border-cyan-500/30 text-cyan-400 font-semibold text-base hover:bg-white hover:text-black hover:scale-105 shadow-lg transition-all duration-300 transform flex items-center gap-2">
+                            <i class="fa-brands fa-whatsapp text-green-400 text-lg group-hover:text-black"></i> <span data-en="Order on WhatsApp" data-bn="হোয়াটসঅ্যাপে অর্ডার করুন">Order on WhatsApp</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- ডান পাশ: মোবাইল মকআপ প্রিভিউ -->
+                <div class="lg:col-span-5 flex justify-center relative">
+                    <div class="phone-mock w-[300px] sm:w-[320px] h-[600px] bg-black rounded-[45px] p-3.5 border-4 border-cyan-900/60 neon-glow relative shadow-2xl shadow-cyan-950">
+                        <div class="absolute top-6 left-1/2 transform -translate-x-1/2 w-28 h-5 bg-black rounded-full z-30 flex items-center justify-center">
+                            <div class="w-3 h-3 rounded-full bg-gray-900 mr-2"></div>
+                            <div class="w-2 h-2 rounded-full bg-cyan-950"></div>
+                        </div>
+
+                        <div class="w-full h-full bg-gradient-to-b from-[#071326] via-[#040812] to-[#02050b] rounded-[35px] overflow-hidden flex flex-col justify-between p-6 relative border border-cyan-900/30">
+                            <div class="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-cyan-500/10 to-transparent pointer-events-none"></div>
+
+                            <div class="flex justify-between items-center pt-3 z-10">
+                                <span class="text-[10px] text-cyan-400 font-mono tracking-widest uppercase" data-en="LIVE PREVIEW" data-bn="লাইভ প্রিভিউ">LIVE PREVIEW</span>
+                                <div class="w-2 h-2 rounded-full bg-green-500 animate-ping"></div>
+                            </div>
+
+                            <div class="flex flex-col items-center justify-center text-center space-y-4 my-auto z-10">
+                                <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-cyan-500/20 to-blue-600/20 border border-cyan-500/40 flex items-center justify-center text-3xl shadow-inner">
+                                    🎂
+                                </div>
+                                <div>
+                                    <h3 class="text-xl font-bold bg-gradient-to-r from-white via-cyan-200 to-cyan-400 bg-clip-text text-transparent">
+                                        Happy Birthday <br>My Love!
+                                    </h3>
+                                    <p class="text-xs text-gray-400 mt-2" data-en="A gift from Ovi ❤️" data-bn="ওভির পক্ষ থেকে উপহার ❤️">A gift from Ovi ❤️</p>
+                                </div>
+
+                                <div class="flex items-center space-x-1.5 pt-2">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-gray-600"></span>
+                                    <span class="w-5 h-1.5 rounded-full bg-cyan-400"></span>
+                                    <span class="w-1.5 h-1.5 rounded-full bg-gray-600"></span>
+                                </div>
+                            </div>
+
+                            <div class="pb-2 text-center z-10">
+                                <span class="inline-block px-4 py-1.5 rounded-full bg-cyan-950/80 border border-cyan-500/30 text-[10px] text-cyan-300 font-mono tracking-wider">
+                                    CODE WITH OVI ✨
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                        <!-- ফ্লোটিং WhatsApp বাটন -->
+    <a href="https://wa.me/8801875550096?text=Hi%20Ovi,%20I%20want%20to%20order%20a%20website%20gift" target="_blank" aria-label="Chat on WhatsApp" class="wa-float fixed bottom-6 right-6 w-14 h-14 bg-green-500 hover:bg-green-600 rounded-full flex items-center justify-center text-white text-3xl transition-transform hover:scale-110 z-50">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ৪. টপ অকেশনস সেকশন -->
+    <section id="occasions" class="py-20 relative bg-[#070b14] bg-grid-pattern">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center space-y-3 mb-16">
+                <h2 class="text-3xl sm:text-5xl font-extrabold tracking-tight">
+                    <span data-en="Top Occasions" data-bn="জনপ্রিয় অকেশনস">Top Occasions</span>
+                </h2>
+                <p class="text-gray-400 text-sm sm:text-base max-w-xl mx-auto" data-en="Pick the moment. We'll craft the perfect interactive web gift." data-bn="মুহূর্তটি বেছে নিন। আমরা তৈরি করে দেব আকর্ষণীয় ওয়েব গিফট।">
+                    Pick the moment. We'll craft the perfect interactive web gift.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <a href="#packages" class="group p-6 rounded-2xl bg-gradient-to-b from-[#0a1128]/80 to-[#030712] border border-cyan-900/40 hover:border-cyan-500/60 transition-all duration-300 neon-glow hover:-translate-y-1 block">
+                    <div class="text-3xl mb-4 group-hover:scale-110 transition-transform">🎂</div>
+                    <h3 class="text-lg font-bold text-white group-hover:text-cyan-400 transition-colors">Birthday</h3>
+                    <p class="text-xs text-cyan-400/80 mt-2 flex items-center gap-1"><span data-en="View packages" data-bn="প্যাকেজ দেখুন">View packages</span> <i class="fa-solid fa-arrow-right text-[10px]"></i></p>
+                </a>
+                <a href="#packages" class="group p-6 rounded-2xl bg-gradient-to-b from-[#0a1128]/80 to-[#030712] border border-cyan-900/40 hover:border-cyan-500/60 transition-all duration-300 neon-glow hover:-translate-y-1 block">
+                    <div class="text-3xl mb-4 group-hover:scale-110 transition-transform">💍</div>
+                    <h3 class="text-lg font-bold text-white group-hover:text-cyan-400 transition-colors">Anniversary</h3>
+                    <p class="text-xs text-cyan-400/80 mt-2 flex items-center gap-1"><span data-en="View packages" data-bn="প্যাকেজ দেখুন">View packages</span> <i class="fa-solid fa-arrow-right text-[10px]"></i></p>
+                </a>
+                <a href="#packages" class="group p-6 rounded-2xl bg-gradient-to-b from-[#0a1128]/80 to-[#030712] border border-cyan-900/40 hover:border-cyan-500/60 transition-all duration-300 neon-glow hover:-translate-y-1 block">
+                    <div class="text-3xl mb-4 group-hover:scale-110 transition-transform">🌙</div>
+                    <h3 class="text-lg font-bold text-white group-hover:text-cyan-400 transition-colors">Eid</h3>
+                    <p class="text-xs text-cyan-400/80 mt-2 flex items-center gap-1"><span data-en="View packages" data-bn="প্যাকেজ দেখুন">View packages</span> <i class="fa-solid fa-arrow-right text-[10px]"></i></p>
+                </a>
+                <a href="#packages" class="group p-6 rounded-2xl bg-gradient-to-b from-[#0a1128]/80 to-[#030712] border border-cyan-900/40 hover:border-cyan-500/60 transition-all duration-300 neon-glow hover:-translate-y-1 block">
+                    <div class="text-3xl mb-4 group-hover:scale-110 transition-transform">🥺</div>
+                    <h3 class="text-lg font-bold text-white group-hover:text-cyan-400 transition-colors">Sorry</h3>
+                    <p class="text-xs text-cyan-400/80 mt-2 flex items-center gap-1"><span data-en="View packages" data-bn="প্যাকেজ দেখুন">View packages</span> <i class="fa-solid fa-arrow-right text-[10px]"></i></p>
+                </a>
+                <a href="#packages" class="group p-6 rounded-2xl bg-gradient-to-b from-[#0a1128]/80 to-[#030712] border border-cyan-900/40 hover:border-cyan-500/60 transition-all duration-300 neon-glow hover:-translate-y-1 block">
+                    <div class="text-3xl mb-4 group-hover:scale-110 transition-transform">🤝</div>
+                    <h3 class="text-lg font-bold text-white group-hover:text-cyan-400 transition-colors">Friendship</h3>
+                    <p class="text-xs text-cyan-400/80 mt-2 flex items-center gap-1"><span data-en="View packages" data-bn="প্যাকেজ দেখুন">View packages</span> <i class="fa-solid fa-arrow-right text-[10px]"></i></p>
+                </a>
+                <a href="#packages" class="group p-6 rounded-2xl bg-gradient-to-b from-[#0a1128]/80 to-[#030712] border border-cyan-900/40 hover:border-cyan-500/60 transition-all duration-300 neon-glow hover:-translate-y-1 block">
+                    <div class="text-3xl mb-4 group-hover:scale-110 transition-transform">❤️</div>
+                    <h3 class="text-lg font-bold text-white group-hover:text-cyan-400 transition-colors">Valentine's</h3>
+                    <p class="text-xs text-cyan-400/80 mt-2 flex items-center gap-1"><span data-en="View packages" data-bn="প্যাকেজ দেখুন">View packages</span> <i class="fa-solid fa-arrow-right text-[10px]"></i></p>
+                </a>
+                <a href="#packages" class="group p-6 rounded-2xl bg-gradient-to-b from-[#0a1128]/80 to-[#030712] border border-cyan-900/40 hover:border-cyan-500/60 transition-all duration-300 neon-glow hover:-translate-y-1 block">
+                    <div class="text-3xl mb-4 group-hover:scale-110 transition-transform">🧍‍♂️</div>
+                    <h3 class="text-lg font-bold text-white group-hover:text-cyan-400 transition-colors">Brother Day</h3>
+                    <p class="text-xs text-cyan-400/80 mt-2 flex items-center gap-1"><span data-en="View packages" data-bn="প্যাকেজ দেখুন">View packages</span> <i class="fa-solid fa-arrow-right text-[10px]"></i></p>
+                </a>
+                <a href="#packages" class="group p-6 rounded-2xl bg-gradient-to-b from-[#0a1128]/80 to-[#030712] border border-cyan-900/40 hover:border-cyan-500/60 transition-all duration-300 neon-glow hover:-translate-y-1 block">
+                    <div class="text-3xl mb-4 group-hover:scale-110 transition-transform">🧍‍♀️</div>
+                    <h3 class="text-lg font-bold text-white group-hover:text-cyan-400 transition-colors">Sister Day</h3>
+                    <p class="text-xs text-cyan-400/80 mt-2 flex items-center gap-1"><span data-en="View packages" data-bn="প্যাকেজ দেখুন">View packages</span> <i class="fa-solid fa-arrow-right text-[10px]"></i></p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ৫. প্যাকেজ ও প্রাইসিং সেকশন (Choose your Package with Package highlighted in cyan box) -->
+    <section id="packages" class="py-20 relative bg-[#0b0f19]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center space-y-3 mb-12">
+                <h2 class="text-3xl sm:text-5xl font-extrabold tracking-tight">
+                    <span data-en="Choose your " data-bn="আপনার নির্বাচন করুন ">Choose your </span><span class="bg-cyan-400 text-black px-2.5 py-0.5 rounded-md font-extrabold shadow-lg shadow-cyan-500/30" data-en="Package" data-bn="প্যাকেজ">Package</span>
+                </h2>
+                <p class="text-gray-400 text-sm sm:text-base max-w-xl mx-auto" data-en="Select an occasion, then pick the budget and features that suit you best." data-bn="আপনার বাজেট এবং পছন্দ অনুযায়ী সেরা প্যাকেজ নির্বাচন করুন।">
+                    Select an occasion, then pick the budget and features that suit you best.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Starter -->
+                <div class="rounded-3xl bg-gradient-to-b from-[#0a1128] to-[#030712] border border-cyan-900/50 p-6 flex flex-col justify-between relative neon-glow hover:scale-105 transition-all duration-300">
+                    <div class="absolute top-4 right-4 bg-red-500/25 border border-red-500/50 text-red-400 text-xs font-bold px-2.5 py-1 rounded-full">-44%</div>
+                    <div>
+                        <div class="w-16 h-16 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-3xl mb-6 shadow-inner">🎁</div>
+                        <span class="text-xs font-mono uppercase tracking-widest text-cyan-400">STARTER</span>
+                        <h3 class="text-2xl font-extrabold text-white mt-1 mb-4">350 Taka</h3>
+                        <p class="text-xs text-gray-400 line-through mb-6">500 Taka limited offer</p>
+                        <ul class="space-y-3 text-sm text-gray-300 mb-8 border-t border-cyan-900/30 pt-6">
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-cyan-400 text-xs"></i> 1–2 photo slides</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-cyan-400 text-xs"></i> Personalized name & message</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-cyan-400 text-xs"></i> Mobile responsive view</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-cyan-400 text-xs"></i> Delivery within 24 hours</li>
+                        </ul>
+                    </div>
+                    <a href="https://wa.me/8801875550096?text=Hi%20Ovi,%20I%20want%20to%20order%20the%20Starter%20Package%20(350%20BDT)" target="_blank" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-black font-bold text-sm text-center hover:bg-white hover:text-black shadow-lg transition-all flex items-center justify-center gap-2">
+                        <i class="fa-brands fa-whatsapp text-lg"></i> <span data-en="Order on WhatsApp" data-bn="হোয়াটসঅ্যাপে অর্ডার">Order on WhatsApp</span>
+                    </a>
+                </div>
+
+                <!-- Basic -->
+                <div class="rounded-3xl bg-gradient-to-b from-[#0a1128] to-[#030712] border border-cyan-900/50 p-6 flex flex-col justify-between relative neon-glow hover:scale-105 transition-all duration-300">
+                    <div class="absolute top-4 right-4 bg-red-500/25 border border-red-500/50 text-red-400 text-xs font-bold px-2.5 py-1 rounded-full">-30%</div>
+                    <div>
+                        <div class="w-16 h-16 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-3xl mb-6 shadow-inner">🎈</div>
+                        <span class="text-xs font-mono uppercase tracking-widest text-cyan-400">BASIC</span>
+                        <h3 class="text-2xl font-extrabold text-white mt-1 mb-4">600 Taka</h3>
+                        <p class="text-xs text-gray-400 line-through mb-6">900 Taka limited offer</p>
+                        <ul class="space-y-3 text-sm text-gray-300 mb-8 border-t border-cyan-900/30 pt-6">
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-cyan-400 text-xs"></i> Multiple photo slides</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-cyan-400 text-xs"></i> Revealing text messages</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-cyan-400 text-xs"></i> Custom note option</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-cyan-400 text-xs"></i> Mobile responsive view</li>
+                        </ul>
+                    </div>
+                    <a href="https://wa.me/8801875550096?text=Hi%20Ovi,%20I%20want%20to%20order%20the%20Basic%20Package%20(600%20BDT)" target="_blank" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-black font-bold text-sm text-center hover:bg-white hover:text-black shadow-lg transition-all flex items-center justify-center gap-2">
+                        <i class="fa-brands fa-whatsapp text-lg"></i> <span data-en="Order on WhatsApp" data-bn="হোয়াটসঅ্যাপে অর্ডার">Order on WhatsApp</span>
+                    </a>
+                </div>
+
+                <!-- Standard (Most Popular) -->
+                <div class="rounded-3xl bg-gradient-to-b from-[#0e1c3f] to-[#030712] border-2 border-cyan-500 p-6 flex flex-col justify-between relative shadow-2xl shadow-cyan-500/20 hover:scale-105 transition-all duration-300">
+                    <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 px-3 py-1 bg-cyan-500 text-black text-[10px] font-extrabold rounded-full uppercase tracking-wider" data-en="MOST POPULAR" data-bn="সবচেয়ে জনপ্রিয়">MOST POPULAR</div>
+                    <div class="absolute top-4 right-4 bg-red-500/25 border border-red-500/50 text-red-400 text-xs font-bold px-2.5 py-1 rounded-full">-33%</div>
+                    <div>
+                        <div class="w-16 h-16 rounded-2xl bg-cyan-500/20 border border-cyan-400/50 flex items-center justify-center text-3xl mb-6 shadow-inner">⭐</div>
+                        <span class="text-xs font-mono uppercase tracking-widest text-cyan-400">STANDARD</span>
+                        <h3 class="text-2xl font-extrabold text-white mt-1 mb-4">1000 Taka</h3>
+                        <p class="text-xs text-gray-400 line-through mb-6">1500 Taka limited offer</p>
+                        <ul class="space-y-3 text-sm text-gray-300 mb-8 border-t border-cyan-900/30 pt-6">
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-cyan-400 text-xs"></i> Photo gallery (unlimited)</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-cyan-400 text-xs"></i> Background song available</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-cyan-400 text-xs"></i> Video can also be added</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-cyan-400 text-xs"></i> Premium animations</li>
+                        </ul>
+                    </div>
+                    <a href="https://wa.me/8801875550096?text=Hi%20Ovi,%20I%20want%20to%20order%20the%20Standard%20Package%20(1000%20BDT)" target="_blank" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-cyan-400 to-blue-500 text-black font-extrabold text-sm text-center hover:bg-white hover:text-black shadow-lg transition-all flex items-center justify-center gap-2">
+                        <i class="fa-brands fa-whatsapp text-lg"></i> <span data-en="Order on WhatsApp" data-bn="হোয়াটসঅ্যাপে অর্ডার">Order on WhatsApp</span>
+                    </a>
+                </div>
+
+                <!-- Premium -->
+                <div class="rounded-3xl bg-gradient-to-b from-[#0a1128] to-[#030712] border border-cyan-900/50 p-6 flex flex-col justify-between relative neon-glow hover:scale-105 transition-all duration-300">
+                    <div class="absolute top-4 right-4 bg-red-500/25 border border-red-500/50 text-red-400 text-xs font-bold px-2.5 py-1 rounded-full">-40%</div>
+                    <div>
+                        <div class="w-16 h-16 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-3xl mb-6 shadow-inner">💎</div>
+                        <span class="text-xs font-mono uppercase tracking-widest text-cyan-400">PREMIUM</span>
+                        <h3 class="text-2xl font-extrabold text-white mt-1 mb-4">1500 Taka</h3>
+                        <p class="text-xs text-gray-400 line-through mb-6">2500 Taka limited offer</p>
+                        <ul class="space-y-3 text-sm text-gray-300 mb-8 border-t border-cyan-900/30 pt-6">
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-cyan-400 text-xs"></i> Fully interactive custom web app</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-cyan-400 text-xs"></i> Mini surprise games & quizzes</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-cyan-400 text-xs"></i> Password-protected private link</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-cyan-400 text-xs"></i> VIP priority support</li>
+                        </ul>
+                    </div>
+                    <a href="https://wa.me/8801875550096?text=Hi%20Ovi,%20I%20want%20to%20order%20the%20Premium%20Package%20(1500%20BDT)" target="_blank" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-black font-bold text-sm text-center hover:bg-white hover:text-black shadow-lg transition-all flex items-center justify-center gap-2">
+                        <i class="fa-brands fa-whatsapp text-lg"></i> <span data-en="Order on WhatsApp" data-bn="হোয়াটসঅ্যাপে অর্ডার">Order on WhatsApp</span>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ৬. ক্লায়েন্ট রিভিউস সেকশন (মুভিং) -->
+    <section id="reviews" class="py-20 relative bg-[#070b14] bg-grid-pattern overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center space-y-3 mb-12">
+                <h2 class="text-3xl sm:text-5xl font-extrabold tracking-tight">
+                    <span data-en="Client Reviews" data-bn="ক্লায়েন্ট রিভিউ">Client Reviews</span>
+                </h2>
+                <p class="text-gray-400 text-sm sm:text-base max-w-xl mx-auto" data-en="See what our happy clients say about our web gifts." data-bn="আমাদের ওয়েব গিফট সম্পর্কে ক্লায়েন্টদের মতামত।">
+                    See what our happy clients say about our web gifts.
+                </p>
+            </div>
+        </div>
+
+        <div class="reviews-wrap overflow-hidden py-6">
+            <div class="reviews-track" id="reviews-track">
+
+                <!-- রিভিউ ১ -->
+                <div class="w-[300px] sm:w-[350px] shrink-0 mr-6 p-6 rounded-2xl bg-gradient-to-b from-[#0a1128] to-[#030712] border border-cyan-900/40 shadow-[0_0_25px_rgba(0,210,255,0.12)]">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-11 h-11 rounded-full bg-cyan-500/20 border border-cyan-500/40 flex items-center justify-center font-bold text-cyan-400">R</div>
+                        <div>
+                            <h4 class="text-sm font-bold text-white">Rahim Ahmed</h4>
+                            <p class="text-[11px] text-cyan-400">Dhaka</p>
+                        </div>
+                    </div>
+                    <div class="text-amber-400 text-xs mb-3"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                    <p class="text-gray-300 text-sm leading-relaxed">"Ovi bhai amar best friend er jonno ekta amazing birthday website banaise. Se ekdom surprised! Delivery WhatsApp e onek fast chilo."</p>
+                </div>
+
+                <!-- রিভিউ ২ -->
+                <div class="w-[300px] sm:w-[350px] shrink-0 mr-6 p-6 rounded-2xl bg-gradient-to-b from-[#0a1128] to-[#030712] border border-cyan-900/40 shadow-[0_0_25px_rgba(0,210,255,0.12)]">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-11 h-11 rounded-full bg-cyan-500/20 border border-cyan-500/40 flex items-center justify-center font-bold text-cyan-400">N</div>
+                        <div>
+                            <h4 class="text-sm font-bold text-white">Nusrat Jahan</h4>
+                            <p class="text-[11px] text-cyan-400">Chittagong</p>
+                        </div>
+                    </div>
+                    <div class="text-amber-400 text-xs mb-3"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                    <p class="text-gray-300 text-sm leading-relaxed">"Anniversary page e amader photo ar favorite song chilo. Ekdom magical feeling! Coding skill dekhe mugdho hoye gesi."</p>
+                </div>
+
+                <!-- রিভিউ ৩ -->
+                <div class="w-[300px] sm:w-[350px] shrink-0 mr-6 p-6 rounded-2xl bg-gradient-to-b from-[#0a1128] to-[#030712] border border-cyan-900/40 shadow-[0_0_25px_rgba(0,210,255,0.12)]">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-11 h-11 rounded-full bg-cyan-500/20 border border-cyan-500/40 flex items-center justify-center font-bold text-cyan-400">T</div>
+                        <div>
+                            <h4 class="text-sm font-bold text-white">Tanvir Hossain</h4>
+                            <p class="text-[11px] text-cyan-400">Sylhet</p>
+                        </div>
+                    </div>
+                    <div class="text-amber-400 text-xs mb-3"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                    <p class="text-gray-300 text-sm leading-relaxed">"Onek professional service. bKash e easily payment korlam, kichukkhon pore Netlify link ready. Highly recommended!"</p>
+                </div>
+
+                <!-- রিভিউ ৪ -->
+                <div class="w-[300px] sm:w-[350px] shrink-0 mr-6 p-6 rounded-2xl bg-gradient-to-b from-[#0a1128] to-[#030712] border border-cyan-900/40 shadow-[0_0_25px_rgba(0,210,255,0.12)]">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-11 h-11 rounded-full bg-cyan-500/20 border border-cyan-500/40 flex items-center justify-center font-bold text-cyan-400">S</div>
+                        <div>
+                            <h4 class="text-sm font-bold text-white">Sabrina Akter</h4>
+                            <p class="text-[11px] text-cyan-400">Rajshahi</p>
+                        </div>
+                    </div>
+                    <div class="text-amber-400 text-xs mb-3"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                    <p class="text-gray-300 text-sm leading-relaxed">"Valentine's Day te boyfriend ke surprise dilam. Se to pura page dekhe emotional hoye gelo 🥹 Thank you Ovi!"</p>
+                </div>
+
+                <!-- রিভিউ ৫ -->
+                <div class="w-[300px] sm:w-[350px] shrink-0 mr-6 p-6 rounded-2xl bg-gradient-to-b from-[#0a1128] to-[#030712] border border-cyan-900/40 shadow-[0_0_25px_rgba(0,210,255,0.12)]">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-11 h-11 rounded-full bg-cyan-500/20 border border-cyan-500/40 flex items-center justify-center font-bold text-cyan-400">M</div>
+                        <div>
+                            <h4 class="text-sm font-bold text-white">Mehedi Hasan</h4>
+                            <p class="text-[11px] text-cyan-400">Khulna</p>
+                        </div>
+                    </div>
+                    <div class="text-amber-400 text-xs mb-3"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                    <p class="text-gray-300 text-sm leading-relaxed">"Bhai er birthday te website gift dilam. Music + photo + animation, sob mile jhakkas hoise! Price o reasonable."</p>
+                </div>
+
+                <!-- রিভিউ ৬ -->
+                <div class="w-[300px] sm:w-[350px] shrink-0 mr-6 p-6 rounded-2xl bg-gradient-to-b from-[#0a1128] to-[#030712] border border-cyan-900/40 shadow-[0_0_25px_rgba(0,210,255,0.12)]">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-11 h-11 rounded-full bg-cyan-500/20 border border-cyan-500/40 flex items-center justify-center font-bold text-cyan-400">F</div>
+                        <div>
+                            <h4 class="text-sm font-bold text-white">Farhana Islam</h4>
+                            <p class="text-[11px] text-cyan-400">Barisal</p>
+                        </div>
+                    </div>
+                    <div class="text-amber-400 text-xs mb-3"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                    <p class="text-gray-300 text-sm leading-relaxed">"Eid er gift hishebe ammu ke dilam. Ammu khushi te kende dise. Eto sundor kaj ashai kori nai, ekdom worth it!"</p>
+                </div>
+
+                <!-- রিভিউ ৭ -->
+                <div class="w-[300px] sm:w-[350px] shrink-0 mr-6 p-6 rounded-2xl bg-gradient-to-b from-[#0a1128] to-[#030712] border border-cyan-900/40 shadow-[0_0_25px_rgba(0,210,255,0.12)]">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-11 h-11 rounded-full bg-cyan-500/20 border border-cyan-500/40 flex items-center justify-center font-bold text-cyan-400">A</div>
+                        <div>
+                            <h4 class="text-sm font-bold text-white">Arif Chowdhury</h4>
+                            <p class="text-[11px] text-cyan-400">Comilla</p>
+                        </div>
+                    </div>
+                    <div class="text-amber-400 text-xs mb-3"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                    <p class="text-gray-300 text-sm leading-relaxed">"Sorry bolar jonno ekta special page banalam. Rag poira gelo, ar kotha-i nai! 😄 Best idea ever."</p>
+                </div>
+
+                <!-- রিভিউ ৮ -->
+                <div class="w-[300px] sm:w-[350px] shrink-0 mr-6 p-6 rounded-2xl bg-gradient-to-b from-[#0a1128] to-[#030712] border border-cyan-900/40 shadow-[0_0_25px_rgba(0,210,255,0.12)]">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-11 h-11 rounded-full bg-cyan-500/20 border border-cyan-500/40 flex items-center justify-center font-bold text-cyan-400">T</div>
+                        <div>
+                            <h4 class="text-sm font-bold text-white">Tasnim Rahman</h4>
+                            <p class="text-[11px] text-cyan-400">Rangpur</p>
+                        </div>
+                    </div>
+                    <div class="text-amber-400 text-xs mb-3"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                    <p class="text-gray-300 text-sm leading-relaxed">"Bondhuttor din e friend der jonno website banaisi. Shobai bolse eta ki kore banalam! Design ta onek premium."</p>
+                </div>
+
+                <!-- রিভিউ ৯ -->
+                <div class="w-[300px] sm:w-[350px] shrink-0 mr-6 p-6 rounded-2xl bg-gradient-to-b from-[#0a1128] to-[#030712] border border-cyan-900/40 shadow-[0_0_25px_rgba(0,210,255,0.12)]">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-11 h-11 rounded-full bg-cyan-500/20 border border-cyan-500/40 flex items-center justify-center font-bold text-cyan-400">I</div>
+                        <div>
+                            <h4 class="text-sm font-bold text-white">Imran Hossain</h4>
+                            <p class="text-[11px] text-cyan-400">Mymensingh</p>
+                        </div>
+                    </div>
+                    <div class="text-amber-400 text-xs mb-3"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                    <p class="text-gray-300 text-sm leading-relaxed">"Wife er birthday te Premium package nilam. Game ar quiz dekhe se ekdom khushi. Support team o onek helpful."</p>
+                </div>
+
+                <!-- রিভিউ ১০ -->
+                <div class="w-[300px] sm:w-[350px] shrink-0 mr-6 p-6 rounded-2xl bg-gradient-to-b from-[#0a1128] to-[#030712] border border-cyan-900/40 shadow-[0_0_25px_rgba(0,210,255,0.12)]">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-11 h-11 rounded-full bg-cyan-500/20 border border-cyan-500/40 flex items-center justify-center font-bold text-cyan-400">J</div>
+                        <div>
+                            <h4 class="text-sm font-bold text-white">Jannatul Ferdous</h4>
+                            <p class="text-[11px] text-cyan-400">Cox's Bazar</p>
+                        </div>
+                    </div>
+                    <div class="text-amber-400 text-xs mb-3"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                    <p class="text-gray-300 text-sm leading-relaxed">"Sob kichu perfect chilo. Time moto delivery, ar change korte bolle sathe sathe kore dise. Abar order korbo inshaAllah!"</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ৭. পেমেন্ট মেথডস সেকশন (Exactly 8 items: 4 Mobile Banking + 4 Banks with photo2.jpg to photo9.jpg) -->
+    <section id="payments" class="py-20 relative bg-[#0b0f19]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center space-y-3 mb-16">
+                <h2 class="text-3xl sm:text-5xl font-extrabold tracking-tight">
+                    <span data-en="Payment Methods" data-bn="পেমেন্ট মেথড">Payment Methods</span>
+                </h2>
+                <p class="text-gray-400 text-sm sm:text-base max-w-xl mx-auto" data-en="Pay securely using trusted Bangladeshi mobile financial services and bank transfers." data-bn="নিরাপদে বাংলাদেশি মোবাইল ব্যাংকিং ও ব্যাংক ট্রান্সফারের মাধ্যমে পেমেন্ট করুন।">
+                    Pay securely using trusted Bangladeshi mobile financial services and bank transfers.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
+                
+                <!-- 1. bKash (photo2.jpg) -->
+                <div class="p-6 rounded-2xl bg-gradient-to-b from-[#0a1128] to-[#030712] border border-cyan-900/40 flex flex-col items-center justify-center text-center neon-glow hover:scale-105 transition-all duration-300">
+                    <div class="w-14 h-14 rounded-xl overflow-hidden border border-pink-500/40 bg-pink-600/20 flex items-center justify-center text-pink-500 text-xl font-bold mb-3 shadow-inner">
+                        <img src="photo2.jpg" alt="bKash" onerror="this.onerror=null; this.src='https://placehold.co/56x56/e2136e/ffffff?text=bKash';" class="w-full h-full object-cover">
+                    </div>
+                    <h3 class="text-base font-bold text-white">bKash</h3>
+                    <p class="text-[11px] text-gray-400 mt-1" data-en="Personal & Merchant" data-bn="পার্সোনাল ও মার্চেন্ট">Personal & Merchant</p>
+                </div>
+
+                <!-- 2. Nagad (photo3.jpg) -->
+                <div class="p-6 rounded-2xl bg-gradient-to-b from-[#0a1128] to-[#030712] border border-cyan-900/40 flex flex-col items-center justify-center text-center neon-glow hover:scale-105 transition-all duration-300">
+                    <div class="w-14 h-14 rounded-xl overflow-hidden border border-orange-500/40 bg-orange-600/20 flex items-center justify-center text-orange-500 text-xl font-bold mb-3 shadow-inner">
+                        <img src="photo3.jpg" alt="Nagad" onerror="this.onerror=null; this.src='https://placehold.co/56x56/f7931a/ffffff?text=Nagad';" class="w-full h-full object-cover">
+                    </div>
+                    <h3 class="text-base font-bold text-white">Nagad</h3>
+                    <p class="text-[11px] text-gray-400 mt-1" data-en="Mobile Wallet" data-bn="মোবাইল ওয়ালেট">Mobile Wallet</p>
+                </div>
+
+                <!-- 3. Rocket (photo4.jpg) -->
+                <div class="p-6 rounded-2xl bg-gradient-to-b from-[#0a1128] to-[#030712] border border-cyan-900/40 flex flex-col items-center justify-center text-center neon-glow hover:scale-105 transition-all duration-300">
+                    <div class="w-14 h-14 rounded-xl overflow-hidden border border-purple-500/40 bg-purple-600/20 flex items-center justify-center text-purple-400 text-xl font-bold mb-3 shadow-inner">
+                        <img src="photo4.jpg" alt="Rocket" onerror="this.onerror=null; this.src='https://placehold.co/56x56/8c349b/ffffff?text=Rocket';" class="w-full h-full object-cover">
+                    </div>
+                    <h3 class="text-base font-bold text-white">Rocket</h3>
+                    <p class="text-[11px] text-gray-400 mt-1" data-en="DBBL Mobile Banking" data-bn="রকেট মোবাইল ব্যাংকিং">DBBL Mobile Banking</p>
+                </div>
+
+                <!-- 4. Sky Banking (photo5.jpg) -->
+                <div class="p-6 rounded-2xl bg-gradient-to-b from-[#0a1128] to-[#030712] border border-cyan-900/40 flex flex-col items-center justify-center text-center neon-glow hover:scale-105 transition-all duration-300">
+                    <div class="w-14 h-14 rounded-xl overflow-hidden border border-cyan-500/40 bg-cyan-600/20 flex items-center justify-center text-cyan-400 text-xl font-bold mb-3 shadow-inner">
+                        <img src="photo5.jpg" alt="Sky Banking" onerror="this.onerror=null; this.src='https://placehold.co/56x56/00a8cc/ffffff?text=Sky';" class="w-full h-full object-cover">
+                    </div>
+                    <h3 class="text-base font-bold text-white">Sky Banking</h3>
+                    <p class="text-[11px] text-gray-400 mt-1" data-en="Mobile App Banking" data-bn="স্কাই ব্যাংকিং অ্যাপ">Mobile App Banking</p>
+                </div>
+
+                <!-- 5. Dutch-Bangla Bank (photo6.jpg) -->
+                <div class="p-6 rounded-2xl bg-gradient-to-b from-[#0a1128] to-[#030712] border border-cyan-900/40 flex flex-col items-center justify-center text-center neon-glow hover:scale-105 transition-all duration-300">
+                    <div class="w-14 h-14 rounded-xl overflow-hidden border border-blue-500/40 bg-blue-600/20 flex items-center justify-center text-cyan-400 text-xl font-bold mb-3 shadow-inner">
+                        <img src="photo6.jpg" alt="DBBL" onerror="this.onerror=null; this.src='https://placehold.co/56x56/0056b3/ffffff?text=DBBL';" class="w-full h-full object-cover">
+                    </div>
+                    <h3 class="text-base font-bold text-white">Dutch-Bangla Bank</h3>
+                    <p class="text-[11px] text-gray-400 mt-1" data-en="DBBL Bank Transfer" data-bn="ডাচ-বাংলা ব্যাংক ট্রান্সফার">DBBL Bank Transfer</p>
+                </div>
+
+                <!-- 6. BRAC Bank (photo7.jpg) -->
+                <div class="p-6 rounded-2xl bg-gradient-to-b from-[#0a1128] to-[#030712] border border-cyan-900/40 flex flex-col items-center justify-center text-center neon-glow hover:scale-105 transition-all duration-300">
+                    <div class="w-14 h-14 rounded-xl overflow-hidden border border-cyan-500/40 bg-cyan-600/20 flex items-center justify-center text-cyan-300 text-xl font-bold mb-3 shadow-inner">
+                        <img src="photo7.jpg" alt="BRAC" onerror="this.onerror=null; this.src='https://placehold.co/56x56/00a859/ffffff?text=BRAC';" class="w-full h-full object-cover">
+                    </div>
+                    <h3 class="text-base font-bold text-white">BRAC Bank</h3>
+                    <p class="text-[11px] text-gray-400 mt-1" data-en="Direct Bank Pay" data-bn="ব্র্যাক ব্যাংক পে">Direct Bank Pay</p>
+                </div>
+
+                <!-- 7. EBL (photo8.jpg) -->
+                <div class="p-6 rounded-2xl bg-gradient-to-b from-[#0a1128] to-[#030712] border border-cyan-900/40 flex flex-col items-center justify-center text-center neon-glow hover:scale-105 transition-all duration-300">
+                    <div class="w-14 h-14 rounded-xl overflow-hidden border border-indigo-500/40 bg-indigo-600/20 flex items-center justify-center text-indigo-400 text-xl font-bold mb-3 shadow-inner">
+                        <img src="photo8.jpg" alt="EBL" onerror="this.onerror=null; this.src='https://placehold.co/56x56/1a2b4c/ffffff?text=EBL';" class="w-full h-full object-cover">
+                    </div>
+                    <h3 class="text-base font-bold text-white">EBL</h3>
+                    <p class="text-[11px] text-gray-400 mt-1" data-en="Eastern Bank PLC" data-bn="ইস্টার্ন ব্যাংক পিএলসি">Eastern Bank PLC</p>
+                </div>
+
+                <!-- 8. Islami Bank (photo9.jpg) -->
+                <div class="p-6 rounded-2xl bg-gradient-to-b from-[#0a1128] to-[#030712] border border-cyan-900/40 flex flex-col items-center justify-center text-center neon-glow hover:scale-105 transition-all duration-300">
+                    <div class="w-14 h-14 rounded-xl overflow-hidden border border-emerald-500/40 bg-emerald-600/20 flex items-center justify-center text-emerald-400 text-xl font-bold mb-3 shadow-inner">
+                        <img src="photo9.jpg" alt="Islami Bank" onerror="this.onerror=null; this.src='https://placehold.co/56x56/006837/ffffff?text=IBBL';" class="w-full h-full object-cover">
+                    </div>
+                    <h3 class="text-base font-bold text-white">Islami Bank</h3>
+                    <p class="text-[11px] text-gray-400 mt-1" data-en="IBBL Transfer" data-bn="ইসলামী ব্যাংক ট্রান্সফার">IBBL Transfer</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ৭.৫ প্রাইভেসি সেকশন -->
+    <section id="privacy" class="py-20 relative bg-[#070b14] bg-grid-pattern">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="relative rounded-[32px] p-8 sm:p-12 border border-cyan-400/30 bg-gradient-to-b from-cyan-950/70 via-[#06141a] to-[#030712] shadow-[0_0_45px_rgba(0,210,255,0.18)] overflow-hidden">
+                <div class="absolute -top-24 -left-24 w-64 h-64 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+                <!-- হেডিং -->
+                <div class="relative flex items-center gap-4 mb-6">
+                    <div class="w-14 h-14 sm:w-16 sm:h-16 shrink-0 rounded-2xl bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center text-2xl sm:text-3xl shadow-lg shadow-cyan-500/30">
+                        🔒
+                    </div>
+                    <h2 class="text-2xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-tight">
+                        <span data-en="Your Privacy is " data-bn="আপনার প্রাইভেসি, ">Your Privacy is </span><span class="bg-gradient-to-r from-cyan-400 to-blue-200 bg-clip-text text-transparent" data-en="Our Responsibility" data-bn="আমাদের দায়িত্ব">Our Responsibility</span>
+                    </h2>
+                </div>
+
+                <!-- প্যারাগ্রাফ (bold অংশগুলো আলাদা span) -->
+                <p class="relative text-gray-300 text-base sm:text-lg lg:text-xl leading-relaxed mb-8">
+                    <span data-en="We treat every photo, video, name and message you share with us as " data-bn="আপনার শেয়ার করা প্রতিটি ছবি, ভিডিও, নাম ও মেসেজকে আমরা ">We treat every photo, video, name and message you share with us as </span><span class="font-extrabold text-white" data-en="strictly confidential" data-bn="সম্পূর্ণ গোপনীয়">strictly confidential</span><span data-en=". Your media is stored on secure servers, accessed only by the designer assigned to your order, and " data-bn=" হিসেবে গণ্য করি। আপনার মিডিয়া নিরাপদ সার্ভারে সংরক্ষিত থাকে, শুধুমাত্র আপনার অর্ডারের জন্য নির্ধারিত ডিজাইনার তা দেখতে পারেন, এবং ">. Your media is stored on secure servers, accessed only by the designer assigned to your order, and </span><span class="font-extrabold text-white" data-en="permanently deleted within 48 hours of delivery" data-bn="ডেলিভারির ৪৮ ঘণ্টার মধ্যে স্থায়ীভাবে মুছে ফেলা হয়">permanently deleted within 48 hours of delivery</span><span data-en=". We never sell, share, or republish your personal content anywhere. Your moments stay yours — always." data-bn="। আমরা আপনার ব্যক্তিগত কনটেন্ট কখনো বিক্রি, শেয়ার বা রিপাবলিশ করি না। আপনার মুহূর্তগুলো আপনারই থাকে — সবসময়।">. We never sell, share, or republish your personal content anywhere. Your moments stay yours — always.</span>
+                </p>
+
+                <!-- বুলেট পয়েন্ট -->
+                <ul class="relative grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-4 text-sm sm:text-base text-gray-300">
+                    <li class="flex items-center gap-3">
+                        <span class="w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(52,211,153,0.9)] shrink-0"></span>
+                        <span data-en="End-to-end encrypted file transfer" data-bn="এন্ড-টু-এন্ড এনক্রিপ্টেড ফাইল ট্রান্সফার">End-to-end encrypted file transfer</span>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <span class="w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(52,211,153,0.9)] shrink-0"></span>
+                        <span data-en="Auto-delete after final delivery" data-bn="ফাইনাল ডেলিভারির পর অটো-ডিলিট">Auto-delete after final delivery</span>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <span class="w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(52,211,153,0.9)] shrink-0"></span>
+                        <span data-en="No third-party sharing, ever" data-bn="কখনোই থার্ড-পার্টির সাথে শেয়ার নয়">No third-party sharing, ever</span>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <span class="w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(52,211,153,0.9)] shrink-0"></span>
+                        <span data-en="Password protection available" data-bn="পাসওয়ার্ড প্রটেকশন সুবিধা আছে">Password protection available</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- ৮. ফুটার সেকশন (Ovi Studio branding & WhatsApp contact 01875550096) -->
+    <footer class="bg-gradient-to-b from-[#0b0f19] to-[#04060b] border-t border-cyan-900/40 py-16 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
+                
+                <div class="space-y-4">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-xl overflow-hidden border border-cyan-500/40 neon-glow bg-gradient-to-br from-cyan-500 to-blue-700 flex items-center justify-center font-bold text-black text-lg">
+                            O
+                        </div>
+                        <span class="text-lg font-extrabold tracking-wider text-white">Ovi Studio</span>
+                    </div>
+                    <p class="text-gray-400 text-xs sm:text-sm leading-relaxed" data-en="Professional website design & web development services. Build a website with premium templates for birthdays, anniversaries & special occasions." data-bn="প্রফেশনাল ওয়েবসাইট ডিজাইন ও ওয়েব ডেভলপমেন্ট সার্ভিস। জন্মদিন, অ্যানিভার্সারি ও বিশেষ অকেশনের জন্য প্রিমিয়াম টেমপ্লেট দিয়ে ওয়েবসাইট তৈরি করুন।">
+                        Professional website design & web development services. Build a website with premium templates for birthdays, anniversaries & special occasions.
+                    </p>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-bold text-sm mb-4 tracking-wider uppercase" data-en="Occasions" data-bn="অকেশনস">Occasions</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#occasions" class="hover:text-cyan-400 transition-colors">Birthday</a></li>
+                        <li><a href="#occasions" class="hover:text-cyan-400 transition-colors">Anniversary</a></li>
+                        <li><a href="#occasions" class="hover:text-cyan-400 transition-colors">Valentine</a></li>
+                        <li><a href="#occasions" class="hover:text-cyan-400 transition-colors">Eid</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-bold text-sm mb-4 tracking-wider uppercase" data-en="Company" data-bn="কোম্পানি">Company</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#packages" class="hover:text-cyan-400 transition-colors" data-en="Packages" data-bn="প্যাকেজেস">Packages</a></li>
+                        <li><a href="#reviews" class="hover:text-cyan-400 transition-colors" data-en="Reviews" data-bn="রিভিউস">Reviews</a></li>
+                        <li><a href="#payments" class="hover:text-cyan-400 transition-colors" data-en="Payments" data-bn="পেমেন্টস">Payments</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-bold text-sm mb-4 tracking-wider uppercase" data-en="Contact" data-bn="যোগাযোগ">Contact</h4>
+                    <a href="https://wa.me/8801875550096?text=Hi%20Ovi,%20I%20have%20a%20question" target="_blank" class="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-green-500 hover:bg-green-600 text-white font-bold text-sm shadow-lg shadow-green-500/20 transition-all hover:scale-105">
+                        <i class="fa-brands fa-whatsapp text-lg"></i> +8801875550096
+                    </a>
+                    <p class="text-gray-400 text-xs mt-3" data-en="24/7 WhatsApp support" data-bn="২৪/৭ হোয়াটসঅ্যাপ সাপোর্ট">24/7 WhatsApp support</p>
+                </div>
+
+            </div>
+
+            <div class="text-center pt-8 border-t border-cyan-900/30 text-xs text-gray-500">
+                <span data-en="© 2026 Ovi Studio. All rights reserved." data-bn="© ২০২৬ ওভি স্টুডিও। সর্বস্বত্ব সংরক্ষিত।">© 2026 Ovi Studio. All rights reserved.</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- জাভাস্ক্রিপ্ট: মোবাইল মেনু এবং EN/BN ভাষা পরিবর্তন সিস্টেম -->
+    <script>
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+                // রিভিউ মুভিং: কার্ড অটো-ডুপ্লিকেট + স্পিড সেট
+        (function () {
+            const track = document.getElementById('reviews-track');
+            if (!track) return;
+            const items = Array.from(track.children);
+            items.forEach(el => {
+                const clone = el.cloneNode(true);
+                clone.setAttribute('aria-hidden', 'true');
+                track.appendChild(clone);
+            });
+            // প্রতি কার্ডে ৭ সেকেন্ড। বেশি ধীর চাইলে 7 বাড়ান, দ্রুত চাইলে কমান
+            track.style.animationDuration = (items.length * 3) + 's';
+        })();
+
+        // ===== Light / Dark Mode =====
+        function applyTheme(theme) {
+            document.documentElement.classList.toggle('light', theme === 'light');
+            const icon = document.getElementById('theme-icon');
+            if (icon) icon.className = theme === 'light' ? 'fa-solid fa-moon' : 'fa-solid fa-sun';
+            try { localStorage.setItem('theme', theme); } catch (e) {}
+        }
+        function toggleTheme() {
+            applyTheme(document.documentElement.classList.contains('light') ? 'dark' : 'light');
+        }
+        (function () {
+            let t = 'dark';
+            try { t = localStorage.getItem('theme') || 'dark'; } catch (e) {}
+            applyTheme(t);
+        })();
+
+        // ভাষা পরিবর্তন ফাংশন (EN <-> BN)
+                function setLanguage(lang) {
+            const enBtn = document.getElementById('en-btn');
+            const bnBtn = document.getElementById('bn-btn');
+
+            if (lang === 'bn') {
+                bnBtn.className = "px-3 py-1 rounded-full bg-cyan-500 text-black shadow-sm transition-all font-bold";
+                enBtn.className = "px-3 py-1 rounded-full text-gray-400 hover:text-white transition-all font-bold";
+            } else {
+                enBtn.className = "px-3 py-1 rounded-full bg-cyan-500 text-black shadow-sm transition-all font-bold";
+                bnBtn.className = "px-3 py-1 rounded-full text-gray-400 hover:text-white transition-all font-bold";
+            }
+
+            const elements = document.querySelectorAll('[data-en]');
+            elements.forEach(el => {
+                const text = el.getAttribute(`data-${lang}`);
+                if (text) {
+                    el.innerText = text;
+                }
+            });
+        }
+    </script>
+</body>
+</html>
